@@ -1,0 +1,26 @@
+[package]
+name = "zino-cli"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "zino-cli"
+path = "src/main.rs"
+
+
+[dependencies]
+serde = {version = "1",features = ["derive"]}
+serde_json = {version = "1"}
+toml = {version = "0.8.16"}
+clap_derive = "4.5.11"
+clap = {version = "4.5.11", features = ["cargo", "color", "derive"] }
+handlebars = {version = "6.0.0",features = ["rhai"]}
+dialoguer = {version = "0.11.0",features = ["fuzzy-select"]}
+anyhow = "1.0.86"
+tokio = {version = "1.39.1", features = ["signal", "rt", "rt-multi-thread", "macros"] }
+parking_lot = {version = "0.12.3",features = ["arc_lock"]}
+ansi_term = {version = "0.12.1",features = ["serde"]}
+tracing = "0.1.40"
+tracing-subscriber = "0.3.18"
+indicatif = {version = "0.17.8",features = ["tokio"]}
+notify = {version = "6.1.1",features = ["default","serde","fsevent-sys"]}

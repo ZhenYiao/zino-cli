@@ -1,0 +1,39 @@
+#![allow(non_snake_case)]
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+
+{{#if is_dioxus_project}}
+mod domain;
+mod extension;
+mod logic;
+mod router;
+mod service;
+mod view;
+use router::Route;
+use zino::{prelude::*, Desktop};
+type App = Desktop&lt;Route&gt;
+{{/if}}
+
+{{#if is_web_backend}}
+mod controller;
+mod domain;
+mod extension;
+mod logic;
+mod middleware;
+mod model;
+mod router;
+mod schedule;
+mod service;
+use zino::prelude::*;
+{{/if}}
+
+
+fn main() {
+{{#if is_dioxus_project}}
+    App::boot().register(Route::default()).run()
+{{/if}}
+{{#if is_web_backend}}
+    zino::Cluster::boot()
+    .register(router::routes())
+    .run();
+{{/if}}
+}

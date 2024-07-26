@@ -1,0 +1,177 @@
+[package]
+name = "{{project_name}}"
+version = "0.1.0"
+edition = "2021"
+
+
+{{#if is_dioxus_ssr}}
+[dependencies]
+dioxus = "0.5.6"
+dioxus-router = "0.5.6"
+tracing = "0.1.40"
+
+[dependencies.dioxus-free-icons]
+version = "0.8.6"
+features = [
+    "bootstrap",
+    "font-awesome-brands",
+    "font-awesome-solid",
+    "octicons",
+]
+
+[dependencies.zino]
+version = "&lt;4.0"
+features = ["dioxus-ssr"]
+
+[dependencies.zino-core]
+version = "0.24.3"
+features = ["env-filter", "tls-native"]
+
+[dependencies.zino-dioxus]
+version = "0.6.6"
+{{/if}}
+
+{{#if is_dioxus_desktop}}
+[dependencies]
+dioxus = "0.5.6"
+dioxus-router = "0.5.6"
+tracing = "0.1.40"
+
+[dependencies.dioxus-free-icons]
+version = "0.8.6"
+features = [
+    "bootstrap",
+    "font-awesome-brands",
+    "font-awesome-solid",
+    "octicons",
+]
+
+[dependencies.zino]
+version = "0.23.3"
+features = ["dioxus-desktop"]
+
+[dependencies.zino-core]
+version = "0.24.3"
+features = ["env-filter", "tls-native"]
+
+[dependencies.zino-dioxus]
+version = "0.7.0"
+{{/if}}
+{{#if is_actix}}
+[dependencies]
+tracing = "0.1.40"
+
+[dependencies.actix-web]
+version = "4.8.0"
+default-features = false
+
+[dependencies.serde]
+version = "1.0.204"
+features = ["derive"]
+
+[dependencies.zino]
+version = "0.23.3"
+features = [
+    "actix",
+    "i18n",
+    "jwt",
+    "opa",
+    "orm",
+]
+
+[dependencies.zino-core]
+version = "0.24.3"
+features = [
+    "cookie",
+    "env-filter",
+    "orm-postgres",
+    "view-minijinja",
+]
+
+[dependencies.zino-derive]
+version = "0.21.3"
+
+[dependencies.zino-model]
+version = "0.21.3"
+
+{{/if}}
+{{#if is_axum}}
+[dependencies]
+tracing = "0.1.40"
+
+[dependencies.axum]
+version = "0.7.5"
+default-features = false
+
+[dependencies.serde]
+version = "1.0.204"
+features = ["derive"]
+
+[dependencies.zino]
+version = "0.23.3"
+features = [
+    "axum",
+    "i18n",
+    "jwt",
+    "orm",
+]
+
+[dependencies.zino-core]
+version = "0.24.3"
+features = [
+    "cookie",
+    "env-filter",
+    "orm-mysql",
+    "validator-email",
+    "view-tera",
+]
+
+[dependencies.zino-derive]
+version = "0.21.3"
+
+[dependencies.zino-model]
+version = "0.21.3"
+{{/if}}
+
+{{#if is_ntex}}
+[dependencies]
+tracing = "0.1.40"
+
+[dependencies.ntex]
+version = "2.0.3"
+default-features = false
+
+[dependencies.serde]
+version = "1.0.204"
+features = ["derive"]
+
+[dependencies.zino]
+version = "0.23.3"
+features = [
+    "i18n",
+    "jwt",
+    "ntex",
+    "orm",
+]
+
+[dependencies.zino-core]
+version = "0.24.3"
+features = [
+    "cookie",
+    "env-filter",
+    "orm-postgres",
+    "view-minijinja",
+]
+
+[dependencies.zino-derive]
+version = "0.21.3"
+
+[dependencies.zino-model]
+version = "0.21.3"
+{{/if}}
+
+{{#if is_minimal}}
+[dependencies.zino]
+version = "0.23.3"
+features = ["axum"]
+{{/if}}

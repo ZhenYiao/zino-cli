@@ -1,0 +1,86 @@
+# --env=dev
+
+name = "{{project_name}}"
+version = "0.0.1"
+
+{{#if is_web_backend}}
+    [dirs]
+    uploads = "local/uploads"
+
+    [debug]
+    host = "127.0.0.1"
+    port = 6070
+
+    [main]
+    host = "127.0.0.1"
+    port = 6080
+
+    [[standby]]
+    host = "127.0.0.1"
+    port = 6081
+    tag = "portal"
+
+    [[standby]]
+    host = "127.0.0.1"
+    port = 6082
+    tag = "admin"
+
+    [database]
+    namespace = "dc"
+    max-rows = 10000
+    {{#if is_postgres}}
+        [[postgres]]
+        host = "127.0.0.1"
+        port = 5432
+        database = "data_cube"
+        username = "postgres"
+        password = "smcddNr2mrpwgYvO6ICRLPFfLFd27WySGN9a7a9JrsYP3tIP"
+    {{/if}}
+    {{#if is_sqlite}}
+        [[sqlite]]
+        database = "local/data/main.db"
+    {{/if}}
+    [tracing]
+    filter = "warn,zino=info,zino_core=info"
+
+    [metrics]
+    exporter = "prometheus"
+    host = "127.0.0.1"
+    port = 9000
+
+    [jwt]
+    max-age = "1h"
+    refresh-interval = "7d"
+
+    [openapi]
+    custom-html = "local/docs/rapidoc.html"
+{{/if}}
+
+{{#if is_dioxus_project}}
+    {{#if is_dioxus_ssr}}
+        [main]
+        host = "127.0.0.1"
+        port = 6080
+
+        [tracing]
+        filter = "warn,zino=info,zino_core=info"
+    {{/if}}
+    {{#if is_dioxus_desktop}}
+        [window]
+        title = "DataCube"
+        theme = "Dark"
+        transparent = false
+
+        [desktop]
+        disable-default-menu = true
+        resource_dir = "public"
+        icon = "public/favicon.ico"
+        stylesheets = [
+        "public/css/bulma.min.css",
+        "public/css/custom.css",
+        ]
+
+        [tracing]
+        filter = "warn,zino=info,zino_core=info"
+    {{/if}}
+{{/if}}
