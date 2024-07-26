@@ -109,7 +109,7 @@ impl ServeArgs {
         let child = ||{
             return if !args.release {
                 Command::new("cargo")
-                    .arg("build")
+                    .arg("run")
                     .stdout(Stdio::piped())
                     .spawn()
                     .expect("failed to start cargo")
