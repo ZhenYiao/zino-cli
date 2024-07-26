@@ -102,8 +102,8 @@ impl ServeArgs {
     }
     pub fn work_watch(args: ServeArgs) -> ServeStatus {
         unsafe {
-            if let Some(child) = CURRENT_PROCESS.get_mut().unwrap() {
-                child.kill().expect("failed to kill child");
+            if let Ok(Some(child)) = CURRENT_PROCESS.get_mut() {
+                child.kill().ok();
             }
         }
         let child = ||{
@@ -115,7 +115,7 @@ impl ServeArgs {
                     .expect("failed to start cargo")
             } else {
                 Command::new("cargo")
-                    .arg("build")
+                    .arg("run")
                     .arg("--release")
                     .stdout(Stdio::piped())
                     .spawn()
