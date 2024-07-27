@@ -5,8 +5,9 @@ use std::fs::File;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 use crate::new::args::NewProject;
+use crate::new::crate_version::Version;
 
-pub fn create_project(new_project: NewProject) -> std::io::Result<()> {
+pub async fn create_project(new_project: NewProject) -> std::io::Result<()> {
     let is_actix = new_project.project_type == crate::new::NewType::ActixApp;
     let is_axum = new_project.project_type == crate::new::NewType::AxumApp;
     let is_ntex = new_project.project_type == crate::new::NewType::NtexApp;
@@ -21,100 +22,100 @@ pub fn create_project(new_project: NewProject) -> std::io::Result<()> {
         .join(new_project.project_name.clone());
     {
         copy_binary_file(
-            include_bytes!("./template/src/extension/mod.rs"),
+            include_bytes!("../../template/src/extension/mod.rs"),
             path.join("src/extension/mod.rs"),
         )?;
         copy_binary_file(
-            include_bytes!("./template/src/domain/mod.rs"),
+            include_bytes!("../../template/src/domain/mod.rs"),
             path.join("src/domain/mod.rs"),
         )?;
         copy_binary_file(
-            include_bytes!("./template/src/logic/mod.rs"),
+            include_bytes!("../../template/src/logic/mod.rs"),
             path.join("src/logic/mod.rs"),
         )?;
         copy_binary_file(
-            include_bytes!("./template/local/docs/rapidoc.html"),
+            include_bytes!("../../template/local/docs/rapidoc.html"),
             path.join("local/docs/rapidoc.html"),
         )?;
         copy_binary_file(
-            include_bytes!("./template/src/service/mod.rs"),
+            include_bytes!("../../template/src/service/mod.rs"),
             path.join("src/service/mod.rs"),
         )?;
     }
 
     if is_web_backend {
         copy_binary_file(
-            include_bytes!("./template/src/controller/mod.rs"),
+            include_bytes!("../../template/src/controller/mod.rs"),
             path.join("src/controller/mod.rs"),
         )?;
         copy_binary_file(
-            include_bytes!("./template/src/controller/hello.rs"),
+            include_bytes!("../../template/src/controller/hello.rs"),
             path.join("src/controller/hello.rs"),
         )?;
 
         copy_binary_file(
-            include_bytes!("./template/src/model/mod.rs"),
+            include_bytes!("../../template/src/model/mod.rs"),
             path.join("src/model/mod.rs"),
         )?;
         copy_binary_file(
-            include_bytes!("./template/src/model/tag.rs"),
+            include_bytes!("../../template/src/model/tag.rs"),
             path.join("src/model/tag.rs"),
         )?;
         copy_binary_file(
-            include_bytes!("./template/src/model/user.rs"),
+            include_bytes!("../../template/src/model/user.rs"),
             path.join("src/model/user.rs"),
         )?;
         copy_binary_file(
-            include_bytes!("./template/src/schedule/mod.rs"),
+            include_bytes!("../../template/src/schedule/mod.rs"),
             path.join("src/schedule/mod.rs"),
         )?;
     } else if is_dioxus_project {
         copy_binary_file(
-            include_bytes!("./template/src/view/overview.rs"),
+            include_bytes!("../../template/src/view/overview.rs"),
             path.join("src/view/overview.rs"),
         )?;
         copy_binary_file(
-            include_bytes!("./template/src/view/mod.rs"),
+            include_bytes!("../../template/src/view/mod.rs"),
             path.join("src/view/mod.rs"),
         )?;
         copy_binary_file(
-            include_bytes!("./template/public/index.html"),
+            include_bytes!("../../template/public/index.html"),
             path.join("public/index.html"),
         )?;
         copy_binary_file(
-            include_bytes!("./template/public/favicon.ico"),
+            include_bytes!("../../template/public/favicon.ico"),
             path.join("public/favicon.ico"),
         )?;
         copy_binary_file(
-            include_bytes!("./template/public/404.html"),
+            include_bytes!("../../template/public/404.html"),
             path.join("public/404.html"),
         )?;
         copy_binary_file(
-            include_bytes!("./template/public/icons/icon.ico"),
+            include_bytes!("../../template/public/icons/icon.ico"),
             path.join("public/icons/icon.ico"),
         )?;
         copy_binary_file(
-            include_bytes!("./template/public/icons/32x32.png"),
+            include_bytes!("../../template/public/icons/32x32.png"),
             path.join("public/icons/32x32.png"),
         )?;
         copy_binary_file(
-            include_bytes!("./template/public/icons/64x64.png"),
+            include_bytes!("../../template/public/icons/64x64.png"),
             path.join("public/icons/64x64.png"),
         )?;
         copy_binary_file(
-            include_bytes!("./template/public/icons/128x128.png"),
+            include_bytes!("../../template/public/icons/128x128.png"),
             path.join("public/icons/128x128.png"),
         )?;
         copy_binary_file(
-            include_bytes!("./template/public/icons/128x128@2x.png"),
+            include_bytes!("../../template/public/icons/128x128@2x.png"),
             path.join("public/icons/128x128@2x.png"),
         )?;
         copy_binary_file(
-            include_bytes!("./template/public/css/bulma.min.css"),
+            include_bytes!("../../template/public/css/bulma.min.css"),
             path.join("public/css/bulma.min.css"),
         )?;
         copy_binary_file(
-            include_bytes!("./template/public/css/custom.css"),
+            include_bytes!("../../template/public/css/custom.css"),
             path.join("public/css/custom.css"),
         )?;
     }
@@ -122,33 +123,35 @@ pub fn create_project(new_project: NewProject) -> std::io::Result<()> {
     let handlebars = Handlebars::new();
     let mut handlebars_dir = Vec::new();
     handlebars_dir.extend_from_slice(&vec![
-        ("Cargo.toml", include_str!("./template/Cargo.hbs")),
-        ("src/main.rs", include_str!("./template/src/main.hbs")),
+        ("Cargo.toml", include_str!("../../template/Cargo.hbs")),
+        ("src/main.rs", include_str!("../../template/src/main.hbs")),
         (
             "config/config.dev.toml",
-            include_str!("./template/config/config.dev.hbs"),
+            include_str!("../../template/config/config.dev.hbs"),
         ),
         (
             "config/config.prod.toml",
-            include_str!("./template/config/config.prod.hbs"),
+            include_str!("../../template/config/config.prod.hbs"),
         ),
         (
             "src/router/mod.rs",
-            include_str!("./template/src/router/mod.hbs"),
+            include_str!("../../template/src/router/mod.hbs"),
         ),
     ]);
     if is_web_backend {
         handlebars_dir.extend_from_slice(&vec![
             (
                 "src/middleware/access.rs",
-                include_str!("./template/src/middleware/access.hbs"),
+                include_str!("../../template/src/middleware/access.hbs"),
             ),
             (
                 "src/middleware/mod.rs",
-                include_str!("./template/src/middleware/mod.hbs"),
+                include_str!("../../template/src/middleware/mod.hbs"),
             ),
         ]);
     }
+    let mut version = Version::new();
+    let _ = version.online().await.is_ok();
     let handlebars_bridle = json!({
         "is_actix": is_actix,
         "is_axum": is_axum,
@@ -159,6 +162,19 @@ pub fn create_project(new_project: NewProject) -> std::io::Result<()> {
         "is_dioxus_project": is_dioxus_project,
         "is_web_backend": is_web_backend,
         "project_name": new_project.project_name,
+        "zino_version": version.zino,
+        "zino_core_version": version.zino_core,
+        "zino_dioxus_version": version.zino_dioxus,
+        "zino_derive_version": version.zino_derive,
+        "zino_model_version": version.zino_model,
+        "dioxus_version": version.dioxus,
+        "dioxus_router_version": version.dioxus_router,
+        "tracing_version": version.tracing,
+        "dioxus_free_icons_version": version.dioxus_free_icons,
+        "actix_web_version": version.actix_web,
+        "axum_version": version.axum,
+        "ntex_version": version.ntex,
+        "serde_version": version.serde,
     });
     for (i, j) in handlebars_dir {
         render_and_write_to_file(&handlebars, j, &handlebars_bridle, path.join(i))?;

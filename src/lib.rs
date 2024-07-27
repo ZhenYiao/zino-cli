@@ -4,7 +4,6 @@ mod new;
 mod serve;
 mod utils;
 
-use crate::utils::zino_hello;
 use clap::Parser;
 
 #[derive(Parser, Debug)]
@@ -19,7 +18,7 @@ pub enum Args {
 pub async fn parse() -> anyhow::Result<()> {
     tracing_subscriber::fmt().init();
     let resp = match Args::parse() {
-        Args::New => new::new_parse(),
+        Args::New => new::new_parse().await,
         Args::Serve(serve) => serve.serve_exec().await,
     };
     match resp {

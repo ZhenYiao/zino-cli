@@ -6,12 +6,12 @@ edition = "2021"
 
 {{#if is_dioxus_ssr}}
 [dependencies]
-dioxus = "0.5.6"
-dioxus-router = "0.5.6"
-tracing = "0.1.40"
+dioxus = {{dioxus_version}}
+dioxus-router = {{dioxus_router_version}}
+tracing = {{tracing_version}}
 
 [dependencies.dioxus-free-icons]
-version = "0.8.6"
+version = {{dioxus_free_icons_version}}
 features = [
     "bootstrap",
     "font-awesome-brands",
@@ -20,25 +20,25 @@ features = [
 ]
 
 [dependencies.zino]
-version = "&lt;4.0"
+version = {{zino_version}}
 features = ["dioxus-ssr"]
 
 [dependencies.zino-core]
-version = "0.24.3"
+version = {{zino_core_version}}
 features = ["env-filter", "tls-native"]
 
 [dependencies.zino-dioxus]
-version = "0.6.6"
+version = {{zino_dioxus_version}}
 {{/if}}
 
 {{#if is_dioxus_desktop}}
 [dependencies]
-dioxus = "0.5.6"
-dioxus-router = "0.5.6"
-tracing = "0.1.40"
+dioxus = {{dioxus_version}}
+dioxus-router = {{dioxus_router_version}}
+tracing = {{tracing_version}}
 
 [dependencies.dioxus-free-icons]
-version = "0.8.6"
+version = {{dioxus_free_icons_version}}
 features = [
     "bootstrap",
     "font-awesome-brands",
@@ -47,30 +47,30 @@ features = [
 ]
 
 [dependencies.zino]
-version = "0.23.3"
+version = {{zino_version}}
 features = ["dioxus-desktop"]
 
 [dependencies.zino-core]
-version = "0.24.3"
+version = {{zino_core_version}}
 features = ["env-filter", "tls-native"]
 
 [dependencies.zino-dioxus]
-version = "0.7.0"
+version = {{zino_dioxus_version}}
 {{/if}}
 {{#if is_actix}}
 [dependencies]
-tracing = "0.1.40"
+tracing = {{tracing_version}}
 
 [dependencies.actix-web]
-version = "4.8.0"
+version = {{actix_web_version}}
 default-features = false
 
 [dependencies.serde]
-version = "1.0.204"
+version = {{serde_version}}
 features = ["derive"]
 
 [dependencies.zino]
-version = "0.23.3"
+version = {{zino_version}}
 features = [
     "actix",
     "i18n",
@@ -80,7 +80,7 @@ features = [
 ]
 
 [dependencies.zino-core]
-version = "0.24.3"
+version = {{zino_core_version}}
 features = [
     "cookie",
     "env-filter",
@@ -89,26 +89,26 @@ features = [
 ]
 
 [dependencies.zino-derive]
-version = "0.21.3"
+version = {{zino_derive_version}}
 
 [dependencies.zino-model]
-version = "0.21.3"
+version = {{zino_model_version}}
 
 {{/if}}
 {{#if is_axum}}
 [dependencies]
-tracing = "0.1.40"
+tracing = {{tracing_version}}
 
 [dependencies.axum]
-version = "0.7.5"
+version = {{axum_version}}
 default-features = false
 
 [dependencies.serde]
-version = "1.0.204"
+version = {{serde_version}}
 features = ["derive"]
 
 [dependencies.zino]
-version = "0.23.3"
+version = {{zino_version}}
 features = [
     "axum",
     "i18n",
@@ -117,7 +117,7 @@ features = [
 ]
 
 [dependencies.zino-core]
-version = "0.24.3"
+version = {{zino_core_version}}
 features = [
     "cookie",
     "env-filter",
@@ -127,26 +127,26 @@ features = [
 ]
 
 [dependencies.zino-derive]
-version = "0.21.3"
+version = {{zino_derive_version}}
 
 [dependencies.zino-model]
-version = "0.21.3"
+version = {{zino_model_version}}
 {{/if}}
 
 {{#if is_ntex}}
 [dependencies]
-tracing = "0.1.40"
+tracing = {{tracing_version}}
 
 [dependencies.ntex]
-version = "2.0.3"
+version = {{ntex_version}}
 default-features = false
 
 [dependencies.serde]
-version = "1.0.204"
+version = {{serde_version}}
 features = ["derive"]
 
 [dependencies.zino]
-version = "0.23.3"
+version = {{zino_version}}
 features = [
     "i18n",
     "jwt",
@@ -155,7 +155,7 @@ features = [
 ]
 
 [dependencies.zino-core]
-version = "0.24.3"
+version = {{zino_core_version}}
 features = [
     "cookie",
     "env-filter",
@@ -164,14 +164,14 @@ features = [
 ]
 
 [dependencies.zino-derive]
-version = "0.21.3"
+version = {{zino_derive_version}}
 
 [dependencies.zino-model]
-version = "0.21.3"
+version = {{zino_model_version}}
 {{/if}}
 
 {{#if is_minimal}}
 [dependencies.zino]
-version = "0.23.3"
+version = {{zino_version}}
 features = ["axum"]
 {{/if}}
