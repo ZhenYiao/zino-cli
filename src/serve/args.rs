@@ -4,7 +4,7 @@ use std::thread::spawn;
 use std::time::Duration;
 use clap_derive::Parser;
 use notify::{Config, Event, RecursiveMode, Watcher};
-use crate::serve::utils::zino_hello;
+use crate::utils::zino_hello;
 
 #[derive(Parser, Debug, Clone)]
 pub struct ServeArgs{
@@ -30,8 +30,7 @@ pub enum ServeStatus{
 static mut CURRENT_PROCESS: Mutex<Option<Child>> = Mutex::new(None);
 
 impl ServeArgs {
-    pub async fn exec(self) -> anyhow::Result<()>{
-        zino_hello();
+    pub async fn serve_exec(self) -> anyhow::Result<()>{
         tracing::info!("{}",ansi_term::Color::Cyan.paint("Starting server..."));
         let (tx,rx) = std::sync::mpsc::channel::<ServeCommand>();
         let delay = self.delay.clone();
@@ -48,6 +47,8 @@ impl ServeArgs {
                         std::thread::sleep(Duration::from_secs(delay));
                         next = true;
                     }
+                }else {
+                    continue;
                 }
             }
         });
@@ -61,7 +62,10 @@ impl ServeArgs {
         }
         // Watch for changes
         tracing::info!("{}",ansi_term::Color::Cyan.paint("Watching for changes..."));
-        let current_dir = std::env::current_dir().unwrap().join("src");
+        let current_dir = std::env::current_dir().unwrap();
+        let current_dir_src = current_dir.join("src");
+        let current_config = current_dir.join("./config");
+        let current_cargo = current_dir.join("Cargo.toml");
         let config = Config::default()
             .with_poll_interval(Duration::from_secs(2))
             .with_compare_contents(true);
@@ -81,8 +85,9 @@ impl ServeArgs {
                 }
             }
         },config).ok().unwrap();
-        watcher.watch(&current_dir,RecursiveMode::Recursive).ok();
-
+        watcher.watch(&current_dir_src,RecursiveMode::Recursive).ok();
+        watcher.watch(&current_config,RecursiveMode::Recursive).ok();
+        watcher.watch(&current_cargo,RecursiveMode::Recursive).ok();
         // Handle ctrl+c
         while let Ok(()) = tokio::signal::ctrl_c().await {
             tracing::info!("{}",ansi_term::Color::Cyan.paint("Stopping server..."));
@@ -134,5 +139,4 @@ impl ServeArgs {
         // TODO
         ServeStatus::End
     }
-
 }
