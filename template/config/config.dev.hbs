@@ -28,7 +28,10 @@ tag = "admin"
 [database]
 namespace = "dc"
 max-rows = 10000
-{{#if is_ntex or is_actix}}
+{{#if is_ntex}}
+[[postgres]]
+{{/if}}
+{{#if is_actix}}
 [[postgres]]
 {{/if}}
 {{#if is_axum}}
