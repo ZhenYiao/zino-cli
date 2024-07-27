@@ -1,10 +1,10 @@
-use crate::new::NewProject;
 use handlebars::Handlebars;
 use serde_json::json;
 use std::fs;
 use std::fs::File;
 use std::io::Write;
 use std::path::{Path, PathBuf};
+use crate::new::args::NewProject;
 
 pub fn create_project(new_project: NewProject) -> std::io::Result<()> {
     let is_actix = new_project.project_type == crate::new::NewType::ActixApp;

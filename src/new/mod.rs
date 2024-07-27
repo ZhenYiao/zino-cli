@@ -1,4 +1,4 @@
 mod args;
 mod parse_file;
 
-pub use args::new_parse;
+pub use args::{new_parse,NewProject,NewType};
