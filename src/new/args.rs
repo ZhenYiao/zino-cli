@@ -4,6 +4,7 @@ use dialoguer::console::Style;
 use dialoguer::theme::ColorfulTheme;
 use std::path::PathBuf;
 use rust_i18n::t;
+use crate::i18n;
 use crate::utils::zino_hello;
 
 #[derive(Eq, PartialEq, Clone, Debug)]
@@ -25,6 +26,7 @@ pub struct NewProject {
 
 pub async fn new_parse() -> anyhow::Result<()> {
     zino_hello();
+    i18n::init_i18n()?;
     let theme = ColorfulTheme {
         defaults_style: Style::new().blue(),
         prompt_style: Style::new().green().bold(),

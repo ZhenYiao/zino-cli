@@ -7,12 +7,6 @@ edition = "2021"
 name = "zino-cli"
 path = "src/main.rs"
 
-
-[package.metadata.i18n]
-available_locales = ["en", "zh-CN"]
-default_locale = "en"
-load-path = "./locales"
-
 [dependencies]
 serde = {version = "1",features = ["derive"]}
 serde_json = {version = "1"}

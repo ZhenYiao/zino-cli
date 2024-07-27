@@ -1,4 +1,4 @@
-use super::Tag;
+use crate::model::tag::Tag;
 use serde::{Deserialize, Serialize};
 use zino::prelude::*;
 use zino_derive::{DecodeRow, Model, ModelAccessor, ModelHooks, Schema};

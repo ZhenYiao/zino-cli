@@ -180,7 +180,7 @@ pub async fn create_project(new_project: NewProject) -> std::io::Result<()> {
     for (i, j) in handlebars_dir {
         render_and_write_to_file(&handlebars, j, &handlebars_bridle, path.join(i))?;
     }
-
+    over(new_project.project_name.clone());
     Ok(())
 }
 fn copy_binary_file<T: AsRef<Path>>(file_bytes: &[u8], target_path: T) -> std::io::Result<()> {
@@ -214,4 +214,24 @@ fn render_and_write_to_file<T: AsRef<Path>>(
     file.write_all(rendered.as_bytes())?;
 
     Ok(())
+}
+
+fn over(project_name:String){
+    println!("{}", format!("\
+\n
+{} {} {} \n
+     {} \n
+     {} \n
+     {} \n
+{}\n
+    ",
+                           t!("Project"),
+                           t!("init Successful"),
+                           project_name,
+                           ansi_term::Color::Green.paint(format!("cd {}",project_name)),
+                           ansi_term::Color::Green.paint("git init".to_string()),
+                           ansi_term::Color::Green.paint("cargo run".to_string()),
+format!("{}: https://github.com/ZhenYiao/zino-cli/issues",t!("issues"))
+
+    ));
 }

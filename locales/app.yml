@@ -1,0 +1,41 @@
+Directory already exists:
+  en: Directory already exists
+  zh-CN: 目录已经存在
+Enter the project name:
+  en: Enter the project name
+  zh-CN: 输入项目名称
+Fetching crate:
+  en: Fetching crate
+  zh-CN: 正在获取crate
+File changed...:
+  en: File changed...
+  zh-CN: 文件发生变动
+Invalid selection:
+  en: Invalid selection
+  zh-CN: 无效的选择
+Select the project type:
+  en: Select the project type
+  zh-CN: 选择项目类型
+Starting server...:
+  en: Starting server...
+  zh-CN: 正在启动服务器...
+Stopping server...:
+  en: Stopping server...
+  zh-CN: 正在停止服务器...
+Watching for changes...:
+  en: Watching for changes...
+  zh-CN: 正在监听文件变动...
+Project:
+  en: Project
+  zh-CN: 项目
+init failed:
+  en: init failed
+  zh-CN: 初始化失败
+init Successful:
+  en: init succeeded
+  zh-CN: 初始化成功
+issues:
+  en: If you have any questions or suggestions, please feel free to ask in the issue
+  zh-CN: 如果你有任何问题或建议，请在issue中提出
+_version: 2
+

@@ -5,6 +5,7 @@ use std::sync::Mutex;
 use std::thread::spawn;
 use std::time::Duration;
 use rust_i18n::t;
+use crate::i18n;
 use crate::utils::zino_hello;
 
 #[derive(Parser, Debug, Clone)]
@@ -33,6 +34,7 @@ static mut CURRENT_PROCESS: Mutex<Option<Child>> = Mutex::new(None);
 impl ServeArgs {
     pub async fn serve_exec(self) -> anyhow::Result<()> {
         zino_hello();
+        i18n::init_i18n()?;
         tracing::info!("{}", ansi_term::Color::Cyan.paint(t!("Starting server...")));
         let (tx, rx) = std::sync::mpsc::channel::<ServeCommand>();
         let delay = self.delay.clone();
