@@ -1,4 +1,3 @@
-use crate::utils::zino_hello;
 use clap_derive::Parser;
 use notify::{Config, Event, RecursiveMode, Watcher};
 use std::process::{Child, Command, Stdio};
