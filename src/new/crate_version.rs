@@ -147,11 +147,3 @@ impl From<&str> for Crates {
         }
     }
 }
-
-#[tokio::test]
-async fn test_crates_version(){
-    tracing_subscriber::fmt().init();
-    let mut v = Version::new();
-    v.online().await.unwrap();
-    dbg!(v);
-}
