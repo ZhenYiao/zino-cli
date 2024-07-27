@@ -32,6 +32,7 @@ pub enum Crates{
     Axum,
     Ntex,
     Serde,
+    Other,
 }
 pub static CRATES: [&str; 13] = [
     "zino",
@@ -73,9 +74,8 @@ impl Version {
         Self::default()
     }
     pub async fn online(&mut self) -> anyhow::Result<()> {
-        // let loading = Loading::with_stdout(Spinner::new(vec![""]));
-        for (idx,crate_name) in CRATES.iter().enumerate().map(|(x,y)|{(x,y)}){
-            let path = format!(" https://crates.io/api/v1/crates/{}", crate_name);
+        for (idx,crate_name) in CRATES.iter().enumerate().map(|(x,y)|{(x,*y)}){
+            let path = format!("https://crates.io/api/v1/crates/{}", crate_name);
             let client = reqwest::Client::new();
             let resp = client
                 .get(&path)
@@ -84,7 +84,7 @@ impl Version {
                 .await?;
             let json = resp.json::<serde_json::Value>().await?;
             let version = json.get("crate").unwrap().get("max_stable_version").unwrap().as_str().unwrap();
-            match Crates::from(*crate_name){
+            match Crates::from(crate_name){
                 Crates::Zino => self.zino = version.to_string(),
                 Crates::ZinoCore => self.zino_core = version.to_string(),
                 Crates::ZinoDioxus => self.zino_dioxus = version.to_string(),
@@ -98,6 +98,7 @@ impl Version {
                 Crates::Axum => self.axum = version.to_string(),
                 Crates::Ntex => self.ntex = version.to_string(),
                 Crates::Serde => self.serde = version.to_string(),
+                _ => {}
             }
             println!("{}",&format!("\x1B[32m✔\x1B[0m {} {}/{}",t!("Fetching crate") ,idx + 1,CRATES.len()));
 
@@ -122,6 +123,7 @@ impl Display for Crates {
             Crates::Axum => "axum".to_string(),
             Crates::Ntex => "ntex".to_string(),
             Crates::Serde => "serde".to_string(),
+            _ => "other".to_string(),
         };
         write!(f, "{}", str)
     }
@@ -143,7 +145,7 @@ impl From<&str> for Crates {
             "axum" => Crates::Axum,
             "ntex" => Crates::Ntex,
             "serde" => Crates::Serde,
-            _ => Crates::Zino,
+            _ => Crates::Other,
         }
     }
 }

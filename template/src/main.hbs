@@ -10,12 +10,12 @@ mod service;
 mod view;
 use router::Route;
 {{#if is_dioxus_desktop}}
-    use zino::{prelude::*, Desktop};
-    type App = Desktop&lt;Route&gt;;
+use zino::{prelude::*, Desktop};
+type App = Desktop&lt;Route&gt;;
 {{/if}}
 {{#if is_dioxus_ssr}}
-    use zino::{prelude::*, Ssr};
-    type App = Ssr&lt;Route&gt;;
+use zino::{prelude::*, Ssr};
+type App = Ssr&lt;Route&gt;;
 {{/if}}
 {{/if}}
 

@@ -95,7 +95,7 @@ fn call(&self, req: ServiceRequest) -&gt; Self::Future {
 #[derive(Default)]
 pub struct UserSessionInitializer;
 
-pub async fn init_user_session(mut req: Request, next: Next) -&gt; Result&lt;Response&gt; {
+pub async fn _init_user_session(mut req: Request, next: Next) -&gt; Result&lt;Response&gt; {
     let claims = req
     .parse_jwt_claims(JwtClaims::shared_key())
     .map_err(|rejection| rejection.context(&req))?;
@@ -113,7 +113,7 @@ pub async fn init_user_session(mut req: Request, next: Next) -&gt; Result&lt;Res
     Ok(next.run(req.into()).await)
 }
 
-pub async fn check_admin_role(req: Request, next: Next) -&gt; Result&lt;Response&gt; {
+pub async fn _check_admin_role(req: Request, next: Next) -&gt; Result&lt;Response&gt; {
     if req.request_method() == "POST" {
         if let Some(session) = req.get_data::&lt;UserSession&lt;i64&gt;&gt;() {
             if !session.has_role("admin") {

@@ -3,7 +3,9 @@
 mod new;
 mod serve;
 mod utils;
+mod i18n;
 
+use ansi_term::Color::Red;
 use clap::Parser;
 rust_i18n::i18n!("locales");
 #[derive(Parser, Debug)]
@@ -24,7 +26,7 @@ pub async fn parse() -> anyhow::Result<()> {
     match resp {
         Ok(_) => {}
         Err(e) => {
-            println!("Error: {}", e);
+            println!("{}", Red.paint(format!("Error: {}", e)));
         }
     }
     Ok(())
