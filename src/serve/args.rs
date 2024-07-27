@@ -4,6 +4,7 @@ use std::process::{Child, Command, Stdio};
 use std::sync::Mutex;
 use std::thread::spawn;
 use std::time::Duration;
+use rust_i18n::t;
 use crate::utils::zino_hello;
 
 #[derive(Parser, Debug, Clone)]
@@ -32,7 +33,7 @@ static mut CURRENT_PROCESS: Mutex<Option<Child>> = Mutex::new(None);
 impl ServeArgs {
     pub async fn serve_exec(self) -> anyhow::Result<()> {
         zino_hello();
-        tracing::info!("{}", ansi_term::Color::Cyan.paint("Starting server..."));
+        tracing::info!("{}", ansi_term::Color::Cyan.paint(t!("Starting server...")));
         let (tx, rx) = std::sync::mpsc::channel::<ServeCommand>();
         let delay = self.delay.clone();
         // Start the work thread
@@ -56,7 +57,7 @@ impl ServeArgs {
         tx.send(ServeCommand::Start(self.clone())).unwrap();
         if !self.hot_reload {
             while let Ok(()) = tokio::signal::ctrl_c().await {
-                tracing::info!("{}", ansi_term::Color::Cyan.paint("Stopping server..."));
+                tracing::info!("{}", ansi_term::Color::Cyan.paint(t!("Stopping server...")));
                 break;
             }
             return Ok(());
@@ -64,7 +65,7 @@ impl ServeArgs {
         // Watch for changes
         tracing::info!(
             "{}",
-            ansi_term::Color::Cyan.paint("Watching for changes...")
+            ansi_term::Color::Cyan.paint(t!("Watching for changes..."))
         );
         let current_dir = std::env::current_dir().unwrap();
         let current_dir_src = current_dir.join("src");
@@ -85,7 +86,7 @@ impl ServeArgs {
                             return;
                         }
                         previous_change = now;
-                        tracing::info!("{}", ansi_term::Color::Blue.paint("File modified"));
+                        tracing::info!("{}", ansi_term::Color::Blue.paint(t!("File changed...")));
                         tx.send(ServeCommand::Watch(self.clone())).unwrap();
                     }
                 }
@@ -103,7 +104,7 @@ impl ServeArgs {
         watcher.watch(&current_cargo, RecursiveMode::Recursive).ok();
         // Handle ctrl+c
         while let Ok(()) = tokio::signal::ctrl_c().await {
-            tracing::info!("{}", ansi_term::Color::Cyan.paint("Stopping server..."));
+            tracing::info!("{}", ansi_term::Color::Cyan.paint(t!("Stopping server...")));
             break;
         }
         Ok(())

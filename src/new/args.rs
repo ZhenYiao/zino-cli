@@ -3,6 +3,7 @@ use crate::new::parse_file::create_project;
 use dialoguer::console::Style;
 use dialoguer::theme::ColorfulTheme;
 use std::path::PathBuf;
+use rust_i18n::t;
 use crate::utils::zino_hello;
 
 #[derive(Eq, PartialEq, Clone, Debug)]
@@ -34,7 +35,7 @@ pub async fn new_parse() -> anyhow::Result<()> {
     let project_name = dialoguer::Input::<String>::new()
         .with_prompt(
             ansi_term::Color::Cyan
-                .paint("Enter the project name:")
+                .paint(t!("Enter the project name"))
                 .to_string(),
         )
         .interact()?;
@@ -66,7 +67,7 @@ pub async fn new_parse() -> anyhow::Result<()> {
     let selection = dialoguer::Select::with_theme(&theme)
         .with_prompt(
             ansi_term::Color::Cyan
-                .paint("Select the project template:")
+                .paint(t!("Select the project type"))
                 .to_string(),
         )
         .items(&selections[..])
@@ -79,7 +80,7 @@ pub async fn new_parse() -> anyhow::Result<()> {
         2 => NewType::NtexApp,
         3 => NewType::DioxusSsr,
         4 => NewType::DioxusDesktop,
-        _ => return anyhow::bail!("Invalid selection"),
+        _ => return anyhow::bail!(t!("Invalid selection")),
     };
 
     return Ok(create_project(NewProject {

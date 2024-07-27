@@ -5,7 +5,7 @@ mod serve;
 mod utils;
 
 use clap::Parser;
-
+rust_i18n::i18n!("locales");
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 pub enum Args {
