@@ -5,8 +5,9 @@ use std::fs::File;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 use crate::new::args::NewProject;
+use crate::new::crate_version::Version;
 
-pub fn create_project(new_project: NewProject) -> std::io::Result<()> {
+pub async fn create_project(new_project: NewProject) -> std::io::Result<()> {
     let is_actix = new_project.project_type == crate::new::NewType::ActixApp;
     let is_axum = new_project.project_type == crate::new::NewType::AxumApp;
     let is_ntex = new_project.project_type == crate::new::NewType::NtexApp;
@@ -149,6 +150,8 @@ pub fn create_project(new_project: NewProject) -> std::io::Result<()> {
             ),
         ]);
     }
+    let mut version = Version::new();
+    let _ = version.online().await.is_ok();
     let handlebars_bridle = json!({
         "is_actix": is_actix,
         "is_axum": is_axum,
@@ -159,6 +162,19 @@ pub fn create_project(new_project: NewProject) -> std::io::Result<()> {
         "is_dioxus_project": is_dioxus_project,
         "is_web_backend": is_web_backend,
         "project_name": new_project.project_name,
+        "zino_version": version.zino,
+        "zino_core_version": version.zino_core,
+        "zino_dioxus_version": version.zino_dioxus,
+        "zino_derive_version": version.zino_derive,
+        "zino_model_version": version.zino_model,
+        "dioxus_version": version.dioxus,
+        "dioxus_router_version": version.dioxus_router,
+        "tracing_version": version.tracing,
+        "dioxus_free_icons_version": version.dioxus_free_icons,
+        "actix_web_version": version.actix_web,
+        "axum_version": version.axum,
+        "ntex_version": version.ntex,
+        "serde_version": version.serde,
     });
     for (i, j) in handlebars_dir {
         render_and_write_to_file(&handlebars, j, &handlebars_bridle, path.join(i))?;

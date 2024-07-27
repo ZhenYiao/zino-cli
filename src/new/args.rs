@@ -22,7 +22,7 @@ pub struct NewProject {
     pub current_dir: PathBuf,
 }
 
-pub fn new_parse() -> anyhow::Result<()> {
+pub async fn new_parse() -> anyhow::Result<()> {
     zino_hello();
     let theme = ColorfulTheme {
         defaults_style: Style::new().blue(),
@@ -86,5 +86,5 @@ pub fn new_parse() -> anyhow::Result<()> {
         project_name,
         project_type: template_type,
         current_dir: current,
-    })?);
+    }).await?);
 }
