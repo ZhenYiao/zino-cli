@@ -4,6 +4,7 @@ use std::process::{Child, Command, Stdio};
 use std::sync::Mutex;
 use std::thread::spawn;
 use std::time::Duration;
+use crate::utils::zino_hello;
 
 #[derive(Parser, Debug, Clone)]
 pub struct ServeArgs {
@@ -30,6 +31,7 @@ static mut CURRENT_PROCESS: Mutex<Option<Child>> = Mutex::new(None);
 
 impl ServeArgs {
     pub async fn serve_exec(self) -> anyhow::Result<()> {
+        zino_hello();
         tracing::info!("{}", ansi_term::Color::Cyan.paint("Starting server..."));
         let (tx, rx) = std::sync::mpsc::channel::<ServeCommand>();
         let delay = self.delay.clone();

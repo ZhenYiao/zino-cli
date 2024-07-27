@@ -18,7 +18,6 @@ pub enum Args {
 
 pub async fn parse() -> anyhow::Result<()> {
     tracing_subscriber::fmt().init();
-    zino_hello();
     let resp = match Args::parse() {
         Args::New => new::new_parse(),
         Args::Serve(serve) => serve.serve_exec().await,
