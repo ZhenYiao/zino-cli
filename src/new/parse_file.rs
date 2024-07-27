@@ -4,6 +4,7 @@ use std::fs;
 use std::fs::File;
 use std::io::Write;
 use std::path::{Path, PathBuf};
+use rust_i18n::t;
 use crate::new::args::NewProject;
 use crate::new::crate_version::Version;
 
@@ -194,7 +195,7 @@ pub(crate) fn check_path(path: PathBuf) -> Result<PathBuf, String> {
     if fs::read_dir(path.clone()).is_err() {
         fs::create_dir(path.clone()).unwrap();
     } else {
-        return Err("Directory already exists".to_string());
+        return Err(t!("Directory already exists").to_string());
     }
     Ok(path)
 }

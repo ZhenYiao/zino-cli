@@ -1,5 +1,5 @@
 use std::fmt::Display;
-
+use rust_i18n::t;
 // use loading::{Loading, Spinner};
 
 #[derive(Clone, Debug)]
@@ -99,7 +99,7 @@ impl Version {
                 Crates::Ntex => self.ntex = version.to_string(),
                 Crates::Serde => self.serde = version.to_string(),
             }
-            tracing::info!("{}",&format!("\x1B[32m✔\x1B[0m Fetching crate {}/{}", idx + 1,CRATES.len()));
+            println!("{}",&format!("\x1B[32m✔\x1B[0m {} {}/{}",t!("Fetching crate") ,idx + 1,CRATES.len()));
 
         }
     Ok(())
