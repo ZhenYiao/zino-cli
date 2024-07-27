@@ -1,7 +1,8 @@
+use std::io::{BufRead, BufReader};
 use clap_derive::Parser;
 use notify::{Config, Event, RecursiveMode, Watcher};
 use std::process::{Child, Command, Stdio};
-use std::sync::Mutex;
+use std::sync::{Arc, Mutex};
 use std::thread::spawn;
 use std::time::Duration;
 use rust_i18n::t;
@@ -10,7 +11,7 @@ use crate::utils::zino_hello;
 
 #[derive(Parser, Debug, Clone)]
 pub struct ServeArgs {
-    #[clap(short, long, default_value = "true")]
+    #[clap(long, default_value = "true")]
     hot_reload: bool,
     #[clap(short, long, default_value = "false")]
     release: bool,
@@ -29,6 +30,11 @@ pub enum ServeStatus {
     Error,
     Worked,
 }
+#[derive(Eq, PartialEq)]
+pub enum TracingCommand {
+    Start,
+    Stop,
+}
 static mut CURRENT_PROCESS: Mutex<Option<Child>> = Mutex::new(None);
 
 impl ServeArgs {
@@ -41,15 +47,19 @@ impl ServeArgs {
         // Start the work thread
         spawn(move || {
             let mut next = true;
+            let (tracing_tx, tracing_rx) = std::sync::mpsc::channel::<TracingCommand>();
+            Self::tracing(tracing_rx);
             while let Ok(cmd) = rx.recv() {
                 if next {
                     next = false;
+                    tracing_tx.send(TracingCommand::Stop).unwrap();
                     let work = Self::work_thread(cmd);
                     if work == ServeStatus::End {
                         break;
                     } else if work == ServeStatus::Worked {
                         std::thread::sleep(Duration::from_secs(delay));
                         next = true;
+                        tracing_tx.send(TracingCommand::Start).unwrap();
                     }
                 } else {
                     continue;
@@ -130,6 +140,25 @@ impl ServeArgs {
         let child = || {
             return if !args.release {
                 Command::new("cargo")
+                    .arg("build")
+                    .stdout(Stdio::piped())
+                    .spawn()
+                    .expect("failed to start cargo")
+            } else {
+                Command::new("cargo")
+                    .arg("build")
+                    .arg("--release")
+                    .stdout(Stdio::piped())
+                    .spawn()
+                    .expect("failed to start cargo")
+            };
+        };
+        let mut child = child();
+
+        let _ = child.wait().expect("failed to wait on child");
+        let child_run = || {
+            if !args.release {
+                Command::new("cargo")
                     .arg("run")
                     .stdout(Stdio::piped())
                     .spawn()
@@ -141,18 +170,62 @@ impl ServeArgs {
                     .stdout(Stdio::piped())
                     .spawn()
                     .expect("failed to start cargo")
-            };
+            }
         };
-        let mut child = child();
+        let child_run = child_run();
 
-        let _ = child.wait().expect("failed to wait on child");
         unsafe {
-            CURRENT_PROCESS.get_mut().unwrap().replace(child);
+            CURRENT_PROCESS.get_mut().unwrap().replace(child_run);
         }
         return ServeStatus::Worked;
     }
     pub fn work_stop() -> ServeStatus {
         // TODO
         ServeStatus::End
+    }
+    pub fn tracing(rx: std::sync::mpsc::Receiver<TracingCommand>) {
+        spawn(move || {
+            let join_handle = Arc::pin(Mutex::new(None));
+            while let Ok(rx) = rx.recv() {
+                match rx {
+                    TracingCommand::Start => {
+                        join_handle.lock().as_mut().unwrap().replace(spawn(move || {
+                            unsafe {
+                                if let Ok(Some(child)) = CURRENT_PROCESS.get_mut() {
+                                    let output = child.stdout.as_mut().expect("failed to get stdout");
+                                    let mut reader = BufReader::new(output);
+
+                                    loop {
+                                        let mut line = String::new();
+                                        match reader.read_line(&mut line) {
+                                            Ok(0) => {
+                                                break;
+                                            }
+                                            Ok(_) => {
+                                                print!("{}", line);
+                                                line.clear();
+                                            }
+                                            Err(e) => {
+                                                eprintln!("failed to read line: {}", e);
+                                                break;
+                                            }
+                                        }
+                                        std::thread::sleep(Duration::from_millis(50));
+                                    }
+                                }
+                            }
+                        }));
+                    }
+                    TracingCommand::Stop => {
+                        unsafe {
+                            if let Ok(Some(child)) = CURRENT_PROCESS.get_mut() {
+                                child.kill().ok();
+                            }
+                        }
+                        join_handle.lock().as_mut().unwrap().take();
+                    }
+                }
+            }
+        });
     }
 }
