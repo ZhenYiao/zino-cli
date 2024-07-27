@@ -63,7 +63,6 @@ pub fn routes() -&gt; Vec&lt;Router&gt; {
 #[derive(Clone, PartialEq, Eq, Routable)]
 #[rustfmt::skip]
 pub enum Route {
-    #[layout(Wrapper)]
     #[route("/")]
     Overview {},
     #[end_layout]

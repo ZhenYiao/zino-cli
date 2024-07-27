@@ -9,8 +9,14 @@ mod router;
 mod service;
 mod view;
 use router::Route;
-use zino::{prelude::*, Desktop};
-type App = Desktop&lt;Route&gt;
+{{#if is_dioxus_desktop}}
+    use zino::{prelude::*, Desktop};
+    type App = Desktop&lt;Route&gt;;
+{{/if}}
+{{#if is_dioxus_ssr}}
+    use zino::{prelude::*, Ssr};
+    type App = Ssr&lt;Route&gt;;
+{{/if}}
 {{/if}}
 
 {{#if is_web_backend}}

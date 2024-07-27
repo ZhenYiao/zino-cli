@@ -1,7 +1,7 @@
 pub fn zino_hello() {
     println!(
         "{}",
-        ansi_term::Color::Black.paint(
+        ansi_term::Color::Blue.paint(
             r#"
      ______
      |__  / (_)  _ __     ___
