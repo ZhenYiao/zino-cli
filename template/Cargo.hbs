@@ -6,12 +6,12 @@ edition = "2021"
 
 {{#if is_dioxus_ssr}}
 [dependencies]
-dioxus = {{dioxus_version}}
-dioxus-router = {{dioxus_router_version}}
-tracing = {{tracing_version}}
+dioxus = "{{dioxus_version}}"
+dioxus-router = "{{dioxus_router_version}}"
+tracing = "{{tracing_version}}"
 
 [dependencies.dioxus-free-icons]
-version = {{dioxus_free_icons_version}}
+version = "{{dioxus_free_icons_version}}"
 features = [
     "bootstrap",
     "font-awesome-brands",
@@ -20,25 +20,25 @@ features = [
 ]
 
 [dependencies.zino]
-version = {{zino_version}}
+version = "{{zino_version}}"
 features = ["dioxus-ssr"]
 
 [dependencies.zino-core]
-version = {{zino_core_version}}
+version = "{{zino_core_version}}"
 features = ["env-filter", "tls-native"]
 
 [dependencies.zino-dioxus]
-version = {{zino_dioxus_version}}
+version = "{{zino_dioxus_version}}"
 {{/if}}
 
 {{#if is_dioxus_desktop}}
 [dependencies]
-dioxus = {{dioxus_version}}
-dioxus-router = {{dioxus_router_version}}
-tracing = {{tracing_version}}
+dioxus = "{{dioxus_version}}"
+dioxus-router = "{{dioxus_router_version}}"
+tracing = "{{tracing_version}}"
 
 [dependencies.dioxus-free-icons]
-version = {{dioxus_free_icons_version}}
+version = "{{dioxus_free_icons_version}}"
 features = [
     "bootstrap",
     "font-awesome-brands",
@@ -47,30 +47,30 @@ features = [
 ]
 
 [dependencies.zino]
-version = {{zino_version}}
+version = "{{zino_version}}"
 features = ["dioxus-desktop"]
 
 [dependencies.zino-core]
-version = {{zino_core_version}}
+version = "{{zino_core_version}}"
 features = ["env-filter", "tls-native"]
 
 [dependencies.zino-dioxus]
-version = {{zino_dioxus_version}}
+version = "{{zino_dioxus_version}}"
 {{/if}}
 {{#if is_actix}}
 [dependencies]
-tracing = {{tracing_version}}
+tracing = "{{tracing_version}}"
 
 [dependencies.actix-web]
-version = {{actix_web_version}}
+version = "{{actix_web_version}}"
 default-features = false
 
 [dependencies.serde]
-version = {{serde_version}}
+version = "{{serde_version}}"
 features = ["derive"]
 
 [dependencies.zino]
-version = {{zino_version}}
+version = "{{zino_version}}"
 features = [
     "actix",
     "i18n",
@@ -80,7 +80,7 @@ features = [
 ]
 
 [dependencies.zino-core]
-version = {{zino_core_version}}
+version = "{{zino_core_version}}"
 features = [
     "cookie",
     "env-filter",
@@ -89,26 +89,26 @@ features = [
 ]
 
 [dependencies.zino-derive]
-version = {{zino_derive_version}}
+version = "{{zino_derive_version}}"
 
 [dependencies.zino-model]
-version = {{zino_model_version}}
+version = "{{zino_model_version}}"
 
 {{/if}}
 {{#if is_axum}}
 [dependencies]
-tracing = {{tracing_version}}
+tracing = "{{tracing_version}}"
 
 [dependencies.axum]
-version = {{axum_version}}
+version = "{{axum_version}}"
 default-features = false
 
 [dependencies.serde]
-version = {{serde_version}}
+version = "{{serde_version}}"
 features = ["derive"]
 
 [dependencies.zino]
-version = {{zino_version}}
+version = "{{zino_version}}"
 features = [
     "axum",
     "i18n",
@@ -117,7 +117,7 @@ features = [
 ]
 
 [dependencies.zino-core]
-version = {{zino_core_version}}
+version = "{{zino_core_version}}"
 features = [
     "cookie",
     "env-filter",
@@ -127,26 +127,26 @@ features = [
 ]
 
 [dependencies.zino-derive]
-version = {{zino_derive_version}}
+version = "{{zino_derive_version}}"
 
 [dependencies.zino-model]
-version = {{zino_model_version}}
+version = "{{zino_model_version}}"
 {{/if}}
 
 {{#if is_ntex}}
 [dependencies]
-tracing = {{tracing_version}}
+tracing = "{{tracing_version}}"
 
 [dependencies.ntex]
-version = {{ntex_version}}
+version = "{{ntex_version}}"
 default-features = false
 
 [dependencies.serde]
-version = {{serde_version}}
+version = "{{serde_version}}"
 features = ["derive"]
 
 [dependencies.zino]
-version = {{zino_version}}
+version = "{{zino_version}}"
 features = [
     "i18n",
     "jwt",
@@ -155,7 +155,7 @@ features = [
 ]
 
 [dependencies.zino-core]
-version = {{zino_core_version}}
+version = "{{zino_core_version}}"
 features = [
     "cookie",
     "env-filter",
@@ -164,14 +164,14 @@ features = [
 ]
 
 [dependencies.zino-derive]
-version = {{zino_derive_version}}
+version = "{{zino_derive_version}}"
 
 [dependencies.zino-model]
-version = {{zino_model_version}}
+version = "{{zino_model_version}}"
 {{/if}}
 
 {{#if is_minimal}}
 [dependencies.zino]
-version = {{zino_version}}
+version = "{{zino_version}}"
 features = ["axum"]
 {{/if}}

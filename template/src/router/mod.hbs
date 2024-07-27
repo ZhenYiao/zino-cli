@@ -1,44 +1,36 @@
 {{#if is_actix}}
-use crate::{
-    controller::hello,
-    middleware,
-    model::Tag,
-};
+use crate::controller::hello;
 use actix_web::web::{get, ServiceConfig};
-use zino::{DefaultController, RouterConfigure};
-use zino_model::User;
+use zino::RouterConfigure;
 {{/if}}
-
 {{#if is_ntex}}
-use crate::{
-    controller::hello,
-    middleware,
-    model::Tag,
-};
+use crate::controller::hello;
 use ntex::web::{get, ServiceConfig};
-use zino::{DefaultController, RouterConfigure};
-use zino_model::User;
+use zino::RouterConfigure;
 {{/if}}
-
 {{#if is_axum}}
-use crate::{
-    controller::hello,
-    middleware,
-    model::{Tag, User},
-};
+use crate::controller::hello;
 use axum::{
-    middleware::from_fn,
-    routing::{get, post},
+    routing::get,
     Router,
 };
-use zino::DefaultController;
 {{/if}}
 {{#if is_dioxus_project}}
 use crate::view::overview::Overview;
 use dioxus::prelude::*;
 use dioxus_router::prelude::*;
 {{/if}}
-{{#if is_actix or is_ntex}}
+{{#if is_actix}}
+pub fn routes() -&gt; Vec&lt;RouterConfigure&gt; {
+    vec![
+        basic_router as RouterConfigure,
+    ]
+}
+fn basic_router(cfg: &mut ServiceConfig) {
+    cfg.route("/", get().to(hello::index));
+}
+{{/if}}
+{{#if is_ntex}}
 pub fn routes() -&gt; Vec&lt;RouterConfigure&gt; {
     vec![
         basic_router as RouterConfigure,
@@ -59,7 +51,6 @@ pub fn routes() -&gt; Vec&lt;Router&gt; {
 {{/if}}
 
 {{#if is_dioxus_project}}
-
 #[derive(Clone, PartialEq, Eq, Routable)]
 #[rustfmt::skip]
 pub enum Route {
