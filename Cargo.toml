@@ -24,3 +24,4 @@ tracing = "0.1.40"
 tracing-subscriber = "0.3.18"
 indicatif = {version = "0.17.8",features = ["tokio"]}
 notify = {version = "6.1.1",features = ["default","serde","fsevent-sys"]}
+reqwest = {version = "0.12.5",features = ["json"]}
