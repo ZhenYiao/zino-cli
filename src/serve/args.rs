@@ -8,7 +8,6 @@ use std::thread::spawn;
 use std::time::Duration;
 use rust_i18n::t;
 use tokio::sync::OnceCell;
-use crate::core::SHELL;
 use crate::i18n;
 use crate::utils::zino_hello;
 
