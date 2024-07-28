@@ -40,7 +40,7 @@ Options:
       / /_  | | | | | | | (_) |
      /____| |_| |_| |_|  \___/
 
-2024-07-27T13:19:18.780901Z  INFO zino_cli::i18n: Set locale to zh-CN
+2024-07-27T13:19:18.780901Z  INFO zino_cli::i18n: Set locale to en
 Enter the project name: test
 ? Select the project type ›
 ❯ Actix App
