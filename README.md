@@ -73,9 +73,30 @@ project test init successful
 
 If you have any questions or suggestions, please feel free to ask in the issue: https://github.com/ZhenYiao/zino-cli/issues
 ```
+
+- zino-cli serve
+```
+=> zino-cli serve --help
+Serve the project
+
+Usage: zino-cli.exe serve [OPTIONS]
+
+Options:
+      --hot-reload
+  -r, --release
+  -d, --delay <DELAY>  [default: 2]
+  -h, --help           Print help
+```
+```markdown
+release <bool>
+delay <u64>
+hot-reload <bool>
+```
+
+
 ### Features
 - [x] Create a new project(v0.1.0)
-- [ ] Serve the project(v0.2.0)
+- [x] Serve the project(v0.2.0)
 - [ ] Build the project(v0.3.0)
 - [ ] Deploy the project(v0.4.0)
 
