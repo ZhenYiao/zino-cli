@@ -4,6 +4,7 @@ mod new;
 mod serve;
 mod utils;
 mod i18n;
+mod core;
 
 use ansi_term::Color::Red;
 use clap::Parser;
