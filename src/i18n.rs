@@ -32,22 +32,22 @@ pub fn init_i18n() -> anyhow::Result<()>{
     Ok(())
 }
 
-#[cfg(target_os = "macos")]
-pub fn init_i18n() -> anyhow::Result<()>{
-    let args = Command::new("defaults read -g AppleLanguages")
-        .output()?;
-    let output = String::from_utf8(args.stdout)?;
-    if output.contains("zh-Hans") {
-        set_locale("zh-CN");
-        tracing::info!("Set locale to zh-CN");
-    } else {
-        set_locale("en");
-        tracing::info!("Set locale to en-US");
-    }
-    Ok(())
-}
+// #[cfg(target_os = "macos")]
+// pub fn init_i18n() -> anyhow::Result<()>{
+//     let args = Command::new("defaults read -g AppleLanguages")
+//         .output()?;
+//     let output = String::from_utf8(args.stdout)?;
+//     if output.contains("zh-Hans") {
+//         set_locale("zh-CN");
+//         tracing::info!("Set locale to zh-CN");
+//     } else {
+//         set_locale("en");
+//         tracing::info!("Set locale to en-US");
+//     }
+//     Ok(())
+// }
 
-#[cfg(not(any(target_os = "windows", target_os = "linux", target_os = "macos")))]
+#[cfg(not(any(target_os = "windows", target_os = "linux")))]
 pub fn init_i18n() -> anyhow::Result<()>{
     set_locale("en");
     tracing::info!("Set locale to en-US");
